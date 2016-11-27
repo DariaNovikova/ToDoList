@@ -1,20 +1,22 @@
 import { combineReducers } from 'redux';
 
-export default combineReducers({ currentToDo: inputReducer, list: listReducer });
+export default combineReducers({ currentToDo: inputReducer, list: listReducer, editStatus: statusReducer });
 
-function inputReducer(currentToDo='', action) {
+function inputReducer(currentToDo = '', action) {
     switch (action.type) {
         case 'CHANGE_NAME':
             return action.newToDo;
         case 'ADD_TO_LIST':
             return '';
-        case 'EDIT_ITEM':   
-            return action.text; 
+        case 'EDIT_MODE':
+            return action.text;
+        case 'UPDATED_ITEM':
+            return '';
         default:
             return currentToDo;
     }
 };
-function listReducer(list=[], action) {
+function listReducer(list = [], action) {
     switch (action.type) {
         case 'ADD_TO_LIST':
             var newList = list.concat([{ name: action.currentToDo, checked: false }]);
@@ -31,7 +33,7 @@ function listReducer(list=[], action) {
                 }
             }
             return newList;
-        case 'DELETE_ITEM':
+        case 'DELETED_ITEM':
             var newList = [];
             for (let i = 0; i < list.length; i++) {
                 if (i !== action.index) {
@@ -39,20 +41,32 @@ function listReducer(list=[], action) {
                 }
             }
             return newList;
-        case 'EDIT_ITEM':
-        var newList = [];
+        case 'UPDATED_ITEM':
+            var newList = [];
             for (let i = 0; i < list.length; i++) {
                 if (i !== action.index) {
                     newList.push(list[i]);
                 }
                 else {
-                    var updatedItem = { name: action.text, checked:list[i].checked };
+                    var updatedItem = { name: action.text, checked: list[i].checked };
                     newList.push(updatedItem);
                 }
             }
             return newList;
-            
         default:
             return list;
     }
 };
+
+function statusReducer(editStatus = { onEdit: false, editIndex: -1 }, action) {
+    switch (action.type) {
+        case 'EDIT_MODE':
+            return { onEdit: true, editIndex: action.index }
+        case 'UPDATED_ITEM':
+            return { onEdit: false, editIndex: -1 }
+        case 'CHANGE_NAME':
+            return (action.newToDo === '') ? { onEdit: false, editIndex: -1 } : editStatus;
+        default:
+            return editStatus;
+    }
+}

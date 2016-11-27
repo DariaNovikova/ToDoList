@@ -21,15 +21,23 @@ export function onItemCompleted(index) {
 
 export function deleteItem(index) {
     return {
-        type: 'DELETE_ITEM',
+        type: 'DELETED_ITEM',
         index
     }
 }
 
-export function editItem(index,text) {
+export function updatedItem(index, text) {
     return {
-        type: 'EDIT_ITEM',
+        type: 'UPDATED_ITEM',
         text,
         index
+    }
+}
+
+export function editMode(index, text) {
+    return {
+        type: 'EDIT_MODE',
+        index,
+        text
     }
 }
