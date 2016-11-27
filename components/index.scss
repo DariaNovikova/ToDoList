@@ -1,0 +1,57 @@
+body {
+    width: 100%;
+    margin: 0;
+    font-family: Arial;
+}
+
+#app {
+    margin: 0 auto;
+    width: 70%;
+    background: #E0FFFF;
+    padding: 50px 0;
+    #main-container {
+        width: 80%;
+        border: 2px solid black;
+        margin: 0 auto;
+        padding: 30px;
+        h1 {
+            text-align: center;
+        }
+        input[type="text"],
+        button {
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        input[type="text"] {
+            width: 70%;
+        }
+        button {
+            width: 30%;
+            font-weight: bold;
+        }
+    }
+    .list-container {
+        margin: 30px auto;
+        width: 80%;
+        .item-container {
+            margin-bottom: 20px;
+            font-size: 18px;
+            input {
+                -ms-transform: scale(2);
+                -moz-transform: scale(2);
+                -webkit-transform: scale(2);
+                -o-transform: scale(2);
+                padding: 10px;
+                margin-right: 20px;
+            }
+            #delete {
+                width: 30px;
+                margin-left:30px;
+               
+            }
+            #edit {
+                width: 25px;
+            }
+        }
+    }
+}
