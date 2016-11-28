@@ -1,16 +1,17 @@
 import { combineReducers } from 'redux';
+import ActionTypes from './ActionTypes.js';
 
 export default combineReducers({ currentToDo: inputReducer, list: listReducer, editStatus: statusReducer });
 
 function inputReducer(currentToDo = '', action) {
     switch (action.type) {
-        case 'CHANGE_NAME':
+        case ActionTypes.CHANGE_NAME:
             return action.newToDo;
-        case 'ADD_TO_LIST':
+        case ActionTypes.ADD_TO_LIST:
             return '';
-        case 'EDIT_MODE':
+        case ActionTypes.EDIT_MODE:
             return action.text;
-        case 'UPDATED_ITEM':
+        case ActionTypes.UPDATED_ITEM:
             return '';
         default:
             return currentToDo;
@@ -18,10 +19,10 @@ function inputReducer(currentToDo = '', action) {
 };
 function listReducer(list = [], action) {
     switch (action.type) {
-        case 'ADD_TO_LIST':
+        case ActionTypes.ADD_TO_LIST:
             var newList = list.concat([{ name: action.currentToDo, checked: false }]);
             return newList;
-        case 'ON_ITEM_COMPLETED':
+        case ActionTypes.ON_ITEM_COMPLETED:
             var newList = [];
             for (let i = 0; i < list.length; i++) {
                 if (i !== action.index) {
@@ -33,7 +34,7 @@ function listReducer(list = [], action) {
                 }
             }
             return newList;
-        case 'DELETED_ITEM':
+        case ActionTypes.DELETED_ITEM:
             var newList = [];
             for (let i = 0; i < list.length; i++) {
                 if (i !== action.index) {
@@ -41,7 +42,7 @@ function listReducer(list = [], action) {
                 }
             }
             return newList;
-        case 'UPDATED_ITEM':
+        case ActionTypes.UPDATED_ITEM:
             var newList = [];
             for (let i = 0; i < list.length; i++) {
                 if (i !== action.index) {
@@ -60,11 +61,11 @@ function listReducer(list = [], action) {
 
 function statusReducer(editStatus = { onEdit: false, editIndex: -1 }, action) {
     switch (action.type) {
-        case 'EDIT_MODE':
+        case ActionTypes.EDIT_MODE:
             return { onEdit: true, editIndex: action.index }
-        case 'UPDATED_ITEM':
+        case ActionTypes.UPDATED_ITEM:
             return { onEdit: false, editIndex: -1 }
-        case 'CHANGE_NAME':
+        case ActionTypes.CHANGE_NAME:
             return (action.newToDo === '') ? { onEdit: false, editIndex: -1 } : editStatus;
         default:
             return editStatus;

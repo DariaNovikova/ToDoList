@@ -1,0 +1,10 @@
+const ActionTypes = {
+    CHANGE_NAME: 'CHANGE_NAME',
+    ADD_TO_LIST: 'ADD_TO_LIST',
+    ON_ITEM_COMPLETED: 'ON_ITEM_COMPLETED',
+    DELETED_ITEM: 'DELETED_ITEM',
+    UPDATED_ITEM: 'UPDATED_ITEM',
+    EDIT_MODE: 'EDIT_MODE'
+}
+
+export default ActionTypes;
