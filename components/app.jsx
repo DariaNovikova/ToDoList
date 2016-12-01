@@ -2,7 +2,7 @@ import React from 'react';
 import List from './list.jsx';
 import './index.scss';
 import { connect } from 'react-redux';
-import { changeName, addToList, onItemCompleted, deleteItem, editMode, updatedItem } from '../store/actionCreators.js'
+import { changeName, addToList, onItemCompleted, deleteItem, editMode, updatedItem } from '../store/actionCreators.js';
 
 class App extends React.Component {
   
@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
     return {
         onInputChange: e => dispatch(changeName(e.target.value)),
         addNewItem: currentText => dispatch(addToList(currentText)),
-        onItemCompleted: index => dispatch(onItemCompleted(index)),
+        onItemCompleted: (id, name) => dispatch(onItemCompleted(id, name)),
         deleteItem: index => dispatch(deleteItem(index)),
         editMode: (index, text) => dispatch(editMode(index, text)),
         updatedItem: (index, text) => dispatch(updatedItem(index, text))

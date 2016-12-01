@@ -4,7 +4,8 @@ const ActionTypes = {
     ON_ITEM_COMPLETED: 'ON_ITEM_COMPLETED',
     DELETED_ITEM: 'DELETED_ITEM',
     UPDATED_ITEM: 'UPDATED_ITEM',
-    EDIT_MODE: 'EDIT_MODE'
+    EDIT_MODE: 'EDIT_MODE',
+    LOAD_LIST: 'LOAD_LIST'
 }
 
 export default ActionTypes;

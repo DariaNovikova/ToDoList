@@ -19,8 +19,10 @@ function inputReducer(currentToDo = '', action) {
 };
 function listReducer(list = [], action) {
     switch (action.type) {
+        case ActionTypes.LOAD_LIST:
+            return action.list;
         case ActionTypes.ADD_TO_LIST:
-            var newList = list.concat([{ name: action.currentToDo, checked: false }]);
+            var newList = list.concat([{ name: action.name, checked: false }]);
             return newList;
         case ActionTypes.ON_ITEM_COMPLETED:
             var newList = [];
