@@ -34,23 +34,25 @@ body {
         margin: 30px auto;
         width: 80%;
         .item-container {
-            margin-bottom: 20px;
-            font-size: 18px;
+            width: 70%;
+            padding: 10px 0;
+            font-size: 22px;
             input {
                 -ms-transform: scale(2);
                 -moz-transform: scale(2);
                 -webkit-transform: scale(2);
                 -o-transform: scale(2);
                 padding: 10px;
-                margin-right: 20px;
+                margin-right: 5%;
             }
-            #delete {
-                width: 30px;
-                margin-left:30px;
-               
-            }
-            #edit {
-                width: 25px;
+            .img-container {
+                width: 70px;
+                float: right;
+                img {
+                    width: 25px;
+                    display: inline-block;
+                    margin-left: 10px;
+                }
             }
         }
     }

@@ -22,16 +22,16 @@ function listReducer(list = [], action) {
         case ActionTypes.LOAD_LIST:
             return action.list;
         case ActionTypes.ADD_TO_LIST:
-            var newList = list.concat([{ name: action.name, checked: false }]);
+            var newList = list.concat([{ name: action.name, checked: false, id:action.id }]);
             return newList;
         case ActionTypes.ON_ITEM_COMPLETED:
             var newList = [];
             for (let i = 0; i < list.length; i++) {
-                if (i !== action.index) {
+                if (list[i].id !== action.id) {
                     newList.push(list[i]);
                 }
                 else {
-                    var checkedItem = { name: list[i].name, checked: !list[i].checked };
+                    var checkedItem = { name: list[i].name, checked: action.checked, id:action.id };
                     newList.push(checkedItem);
                 }
             }
@@ -39,7 +39,7 @@ function listReducer(list = [], action) {
         case ActionTypes.DELETED_ITEM:
             var newList = [];
             for (let i = 0; i < list.length; i++) {
-                if (i !== action.index) {
+                if (list[i].id !== action.id) {
                     newList.push(list[i]);
                 }
             }
@@ -47,11 +47,11 @@ function listReducer(list = [], action) {
         case ActionTypes.UPDATED_ITEM:
             var newList = [];
             for (let i = 0; i < list.length; i++) {
-                if (i !== action.index) {
+                if (list[i].id !== action.id) {
                     newList.push(list[i]);
                 }
                 else {
-                    var updatedItem = { name: action.text, checked: list[i].checked };
+                    var updatedItem = { name: action.name, checked: action.checked, id:action.id };
                     newList.push(updatedItem);
                 }
             }

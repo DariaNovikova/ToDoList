@@ -21531,10 +21531,18 @@
 	    function App() {
 	        _classCallCheck(this, App);
 
-	        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+	        _this.focus = _this.focus.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(App, [{
+	        key: 'focus',
+	        value: function focus() {
+	            this.textInput.focus();
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
@@ -21547,15 +21555,19 @@
 	                    null,
 	                    ' Todo List '
 	                ),
-	                _react2.default.createElement('input', { id: 'input', type: 'text', onChange: this.props.onInputChange, value: this.props.currentText }),
+	                _react2.default.createElement('input', { id: 'input', type: 'text', onChange: this.props.onInputChange, value: this.props.currentText, ref: function ref(input) {
+	                        _this2.textInput = input;
+	                    } }),
 	                _react2.default.createElement(
 	                    'button',
 	                    { onClick: function onClick() {
 	                            if (_this2.props.editStatus.onEdit) {
-	                                _this2.props.updatedItem(_this2.props.editStatus.editIndex, _this2.props.currentText);
+	                                var element = _this2.props.items[_this2.props.editStatus.editIndex];
+	                                _this2.props.updatedItem(element.id, _this2.props.currentText, element.checked);
 	                            } else {
 	                                _this2.props.addNewItem(_this2.props.currentText);
 	                            }
+	                            _this2.focus();
 	                        } },
 	                    ' Save'
 	                ),
@@ -21565,7 +21577,8 @@
 	                    _react2.default.createElement(_list2.default, { list: this.props.items,
 	                        onItemCompleted: this.props.onItemCompleted,
 	                        deleteItem: this.props.deleteItem,
-	                        editMode: this.props.editMode })
+	                        editMode: this.props.editMode,
+	                        focus: this.focus })
 	                )
 	            );
 	        }
@@ -21584,17 +21597,17 @@
 	        addNewItem: function addNewItem(currentText) {
 	            return dispatch((0, _actionCreators.addToList)(currentText));
 	        },
-	        onItemCompleted: function onItemCompleted(index) {
-	            return dispatch((0, _actionCreators.onItemCompleted)(index));
+	        onItemCompleted: function onItemCompleted(id, name, checked) {
+	            return dispatch((0, _actionCreators.onItemCompleted)(id, name, checked));
 	        },
-	        deleteItem: function deleteItem(index) {
-	            return dispatch((0, _actionCreators.deleteItem)(index));
+	        deleteItem: function deleteItem(id) {
+	            return dispatch((0, _actionCreators.deleteItem)(id));
 	        },
 	        editMode: function editMode(index, text) {
 	            return dispatch((0, _actionCreators.editMode)(index, text));
 	        },
-	        updatedItem: function updatedItem(index, text) {
-	            return dispatch((0, _actionCreators.updatedItem)(index, text));
+	        updatedItem: function updatedItem(id, name, checked) {
+	            return dispatch((0, _actionCreators.updatedItem)(id, name, checked));
 	        }
 
 	    };
@@ -21648,9 +21661,13 @@
 	        _react2.default.createElement(
 	            "span",
 	            { style: { textDecoration: checked ? 'line-through' : 'none' } },
-	            name,
-	            _react2.default.createElement("img", { id: "delete", onClick: deleteItem, src: "http://www.freeiconspng.com/uploads/delete-button-png-13.png" }),
-	            _react2.default.createElement("img", { id: "edit", onClick: editMode, src: "https://cdn3.iconfinder.com/data/icons/mobidocs/512/edit_write_pencil_pen_page-512.png" })
+	            name
+	        ),
+	        _react2.default.createElement(
+	            "div",
+	            { className: "img-container" },
+	            _react2.default.createElement("img", { onClick: deleteItem, src: "http://www.freeiconspng.com/uploads/delete-button-png-13.png" }),
+	            _react2.default.createElement("img", { onClick: editMode, src: "http://www.freeiconspng.com/uploads/edit-new-icon-22.png" })
 	        )
 	    );
 	}
@@ -21675,15 +21692,16 @@
 	                this.props.list.map(function (el, index) {
 	                    return _react2.default.createElement(Item, { name: el.name,
 	                        checked: el.checked,
-	                        key: index,
+	                        key: el.id,
 	                        onItemCompleted: function onItemCompleted() {
-	                            return _this2.props.onItemCompleted(index);
+	                            return _this2.props.onItemCompleted(el.id, el.name, !el.checked);
 	                        },
 	                        deleteItem: function deleteItem() {
-	                            return _this2.props.deleteItem(index);
+	                            return _this2.props.deleteItem(el.id);
 	                        },
 	                        editMode: function editMode() {
-	                            return _this2.props.editMode(index, el.name);
+	                            _this2.props.editMode(index, el.name);
+	                            _this2.props.focus();
 	                        } });
 	                })
 	            );
@@ -21730,7 +21748,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  width: 100%;\n  margin: 0;\n  font-family: Arial; }\n\n#app {\n  margin: 0 auto;\n  width: 70%;\n  background: #E0FFFF;\n  padding: 50px 0; }\n  #app #main-container {\n    width: 80%;\n    border: 2px solid black;\n    margin: 0 auto;\n    padding: 30px; }\n    #app #main-container h1 {\n      text-align: center; }\n    #app #main-container input[type=\"text\"],\n    #app #main-container button {\n      padding: 10px;\n      box-sizing: border-box; }\n    #app #main-container input[type=\"text\"] {\n      width: 70%; }\n    #app #main-container button {\n      width: 30%;\n      font-weight: bold; }\n  #app .list-container {\n    margin: 30px auto;\n    width: 80%; }\n    #app .list-container .item-container {\n      margin-bottom: 20px;\n      font-size: 18px; }\n      #app .list-container .item-container input {\n        -ms-transform: scale(2);\n        -moz-transform: scale(2);\n        -webkit-transform: scale(2);\n        -o-transform: scale(2);\n        padding: 10px;\n        margin-right: 20px; }\n      #app .list-container .item-container #delete {\n        width: 30px;\n        margin-left: 30px; }\n      #app .list-container .item-container #edit {\n        width: 25px; }\n", ""]);
+	exports.push([module.id, "body {\n  width: 100%;\n  margin: 0;\n  font-family: Arial; }\n\n#app {\n  margin: 0 auto;\n  width: 70%;\n  background: #E0FFFF;\n  padding: 50px 0; }\n  #app #main-container {\n    width: 80%;\n    border: 2px solid black;\n    margin: 0 auto;\n    padding: 30px; }\n    #app #main-container h1 {\n      text-align: center; }\n    #app #main-container input[type=\"text\"],\n    #app #main-container button {\n      padding: 10px;\n      box-sizing: border-box; }\n    #app #main-container input[type=\"text\"] {\n      width: 70%; }\n    #app #main-container button {\n      width: 30%;\n      font-weight: bold; }\n  #app .list-container {\n    margin: 30px auto;\n    width: 80%; }\n    #app .list-container .item-container {\n      width: 70%;\n      padding: 10px 0;\n      font-size: 22px; }\n      #app .list-container .item-container input {\n        -ms-transform: scale(2);\n        -moz-transform: scale(2);\n        -webkit-transform: scale(2);\n        -o-transform: scale(2);\n        padding: 10px;\n        margin-right: 5%; }\n      #app .list-container .item-container .img-container {\n        width: 70px;\n        float: right; }\n        #app .list-container .item-container .img-container img {\n          width: 25px;\n          display: inline-block;\n          margin-left: 10px; }\n", ""]);
 
 	// exports
 
@@ -23821,7 +23839,6 @@
 	function loadAll() {
 	    return function (dispatch) {
 	        _axios2.default.get('/api/todo').then(function (response) {
-	            console.log(response);
 	            var action = {
 	                type: _ActionTypes2.default.LOAD_LIST,
 	                list: response.data
@@ -23843,10 +23860,10 @@
 	function addToList(name) {
 	    return function (dispatch) {
 	        _axios2.default.post('/api/todo', { name: name }).then(function (response) {
-	            console.log(response);
 	            var action = {
 	                type: _ActionTypes2.default.ADD_TO_LIST,
-	                name: response.data.name
+	                name: response.data.name,
+	                id: response.data.id
 	            };
 	            dispatch(action);
 	        }).catch(function (error) {
@@ -23855,25 +23872,50 @@
 	    };
 	}
 
-	function onItemCompleted(index) {
-	    return {
-	        type: _ActionTypes2.default.ON_ITEM_COMPLETED,
-	        index: index
+	function onItemCompleted(id, name, checked) {
+	    return function (dispatch) {
+	        var obj = { name: name, checked: checked };
+	        _axios2.default.put('/api/todo/' + id, obj).then(function (response) {
+	            var action = {
+	                type: _ActionTypes2.default.ON_ITEM_COMPLETED,
+	                id: id,
+	                name: name,
+	                checked: checked
+	            };
+	            dispatch(action);
+	        }).catch(function (error) {
+	            return console.log(error);
+	        });
 	    };
 	}
 
-	function deleteItem(index) {
-	    return {
-	        type: _ActionTypes2.default.DELETED_ITEM,
-	        index: index
+	function deleteItem(id) {
+	    return function (dispatch) {
+	        _axios2.default.delete('/api/todo/' + id, { id: id }).then(function (response) {
+	            var action = {
+	                type: _ActionTypes2.default.DELETED_ITEM,
+	                id: id
+	            };
+	            dispatch(action);
+	        }).catch(function (error) {
+	            return console.log(error);
+	        });
 	    };
 	}
 
-	function updatedItem(index, text) {
-	    return {
-	        type: _ActionTypes2.default.UPDATED_ITEM,
-	        text: text,
-	        index: index
+	function updatedItem(id, name, checked) {
+	    return function (dispatch) {
+	        _axios2.default.put('api/todo/' + id, { name: name, checked: checked }).then(function (response) {
+	            var action = {
+	                type: _ActionTypes2.default.UPDATED_ITEM,
+	                name: name,
+	                id: id,
+	                checked: checked
+	            };
+	            dispatch(action);
+	        }).catch(function (error) {
+	            return console.log(error);
+	        });
 	    };
 	}
 
@@ -25441,15 +25483,15 @@
 	        case _ActionTypes2.default.LOAD_LIST:
 	            return action.list;
 	        case _ActionTypes2.default.ADD_TO_LIST:
-	            var newList = list.concat([{ name: action.name, checked: false }]);
+	            var newList = list.concat([{ name: action.name, checked: false, id: action.id }]);
 	            return newList;
 	        case _ActionTypes2.default.ON_ITEM_COMPLETED:
 	            var newList = [];
 	            for (var i = 0; i < list.length; i++) {
-	                if (i !== action.index) {
+	                if (list[i].id !== action.id) {
 	                    newList.push(list[i]);
 	                } else {
-	                    var checkedItem = { name: list[i].name, checked: !list[i].checked };
+	                    var checkedItem = { name: list[i].name, checked: action.checked, id: action.id };
 	                    newList.push(checkedItem);
 	                }
 	            }
@@ -25457,7 +25499,7 @@
 	        case _ActionTypes2.default.DELETED_ITEM:
 	            var newList = [];
 	            for (var _i = 0; _i < list.length; _i++) {
-	                if (_i !== action.index) {
+	                if (list[_i].id !== action.id) {
 	                    newList.push(list[_i]);
 	                }
 	            }
@@ -25465,10 +25507,10 @@
 	        case _ActionTypes2.default.UPDATED_ITEM:
 	            var newList = [];
 	            for (var _i2 = 0; _i2 < list.length; _i2++) {
-	                if (_i2 !== action.index) {
+	                if (list[_i2].id !== action.id) {
 	                    newList.push(list[_i2]);
 	                } else {
-	                    var updatedItem = { name: action.text, checked: list[_i2].checked };
+	                    var updatedItem = { name: action.name, checked: action.checked, id: action.id };
 	                    newList.push(updatedItem);
 	                }
 	            }

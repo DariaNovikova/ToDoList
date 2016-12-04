@@ -6,7 +6,6 @@ export function loadAll() {
     return dispatch => {
         axios.get('/api/todo')
             .then(response => {
-                console.log(response);
                 var action = {
                     type: ActionTypes.LOAD_LIST,
                     list: response.data
@@ -28,10 +27,10 @@ export function addToList(name) {
     return dispatch => {
         axios.post('/api/todo', { name })
             .then(response => {
-                console.log(response);
                 var action = {
                     type: ActionTypes.ADD_TO_LIST,
-                    name: response.data.name
+                    name: response.data.name,
+                    id: response.data.id
                 }
                 dispatch(action);
             })
@@ -39,30 +38,50 @@ export function addToList(name) {
     }
 }
 
-export function onItemCompleted(id, name) {
-
-    return dispatch=>{
-        axios.put(`/api/todo/${id}`, {id, name})
-    
-     {
-        type: ActionTypes.ON_ITEM_COMPLETED,
-        index
-    }
-    }
-}
-
-export function deleteItem(index) {
-    return {
-        type: ActionTypes.DELETED_ITEM,
-        index
+export function onItemCompleted(id, name, checked) {
+    return dispatch => {
+        var obj = { name, checked }
+        axios.put(`/api/todo/${id}`, obj)
+            .then(response => {
+                var action = {
+                    type: ActionTypes.ON_ITEM_COMPLETED,
+                    id,
+                    name,
+                    checked
+                }
+                dispatch(action);
+            })
+            .catch(error => console.log(error));
     }
 }
 
-export function updatedItem(index, text) {
-    return {
-        type: ActionTypes.UPDATED_ITEM,
-        text,
-        index
+export function deleteItem(id) {
+    return dispatch => {
+        axios.delete(`/api/todo/${id}`, { id })
+            .then(response => {
+                var action = {
+                    type: ActionTypes.DELETED_ITEM,
+                    id
+                }
+                dispatch(action);
+            })
+            .catch(error => console.log(error));
+    }
+}
+
+export function updatedItem(id, name, checked) {
+    return dispatch => {
+        axios.put(`api/todo/${id}`, { name, checked })
+            .then(response => {
+                var action = {
+                    type: ActionTypes.UPDATED_ITEM,
+                    name,
+                    id,
+                    checked
+                }
+                dispatch(action);
+            })
+            .catch(error => console.log(error));
     }
 }
 
