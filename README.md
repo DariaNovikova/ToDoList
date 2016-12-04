@@ -7,3 +7,5 @@ npm start
 To view the result navigate to
 
 http://localhost:3000/
+
+To run tests: npm test
